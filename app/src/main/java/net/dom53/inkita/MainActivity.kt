@@ -57,6 +57,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import coil.ImageLoader
 import coil.compose.LocalImageLoader
 import kotlinx.coroutines.flow.first
@@ -77,6 +78,8 @@ import net.dom53.inkita.ui.download.DownloadQueueViewModelFactory
 import net.dom53.inkita.ui.history.HistoryScreen
 import net.dom53.inkita.ui.library.LibraryV2Screen
 import net.dom53.inkita.ui.navigation.MainScreen
+import net.dom53.inkita.ui.people.PersonDetailScreen
+import net.dom53.inkita.ui.people.PersonScreen
 import net.dom53.inkita.ui.reader.model.ReaderReturn
 import net.dom53.inkita.ui.reader.screen.ReaderScreen
 import net.dom53.inkita.ui.seriesdetail.SeriesDetailScreenV2
@@ -470,6 +473,9 @@ fun InkitaApp(
                             onOpenSeries = { seriesId ->
                                 navController.navigate("series/$seriesId")
                             },
+                            onOpenPerson = { personName ->
+                                navController.navigate(PersonScreen(personName))
+                            },
                             initialCollectionId = collectionIdArg,
                             initialCollectionName = collectionNameArg,
                         )
@@ -517,6 +523,13 @@ fun InkitaApp(
                             initialGenreName = genreNameArg,
                             initialTagId = tagIdArg,
                             initialTagName = tagNameArg,
+                        )
+                    }
+                    composable<PersonScreen> {
+                        val person = it.toRoute<PersonScreen>()
+                        PersonDetailScreen(
+                            personDetailScreen = person,
+                            appPreferences = appPreferences,
                         )
                     }
                     composable(MainScreen.Downloads.route) {

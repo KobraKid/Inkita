@@ -97,6 +97,7 @@ fun LibraryV2Screen(
     cacheManager: CacheManager,
     appPreferences: AppPreferences,
     onOpenSeries: (Int) -> Unit,
+    onOpenPerson: (String) -> Unit,
     initialCollectionId: Int? = null,
     initialCollectionName: String? = null,
 ) {
@@ -415,6 +416,7 @@ fun LibraryV2Screen(
                         error = uiState.peopleError,
                         config = config,
                         onLoadMore = { viewModel.loadMorePeople() },
+                        onOpenPerson = onOpenPerson,
                     )
                 }
                 LibraryV2Section.LibrarySeries -> {
@@ -934,6 +936,7 @@ private fun PeopleGrid(
     error: String?,
     config: AppConfig,
     onLoadMore: () -> Unit,
+    onOpenPerson: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val gridState = rememberLazyGridState()
@@ -995,9 +998,7 @@ private fun PeopleGrid(
                             person = person,
                             config = config,
                             onClick = {
-                                android.widget.Toast
-                                    .makeText(context, "Not implemented yet", android.widget.Toast.LENGTH_SHORT)
-                                    .show()
+                                onOpenPerson(person.name ?: "")
                             },
                         )
                     }
