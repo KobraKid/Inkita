@@ -5,6 +5,7 @@ import net.dom53.inkita.data.api.dto.AppUserCollectionDto
 import net.dom53.inkita.data.api.dto.BookmarkDto
 import net.dom53.inkita.data.api.dto.BrowsePersonDto
 import net.dom53.inkita.data.api.dto.BrowsePersonFilterDto
+import net.dom53.inkita.data.api.dto.ChapterDto
 import net.dom53.inkita.data.api.dto.CollectionDto
 import net.dom53.inkita.data.api.dto.DecodeFilterRequest
 import net.dom53.inkita.data.api.dto.FilterDefinitionDto
@@ -13,6 +14,7 @@ import net.dom53.inkita.data.api.dto.HourEstimateRangeDto
 import net.dom53.inkita.data.api.dto.LanguageDto
 import net.dom53.inkita.data.api.dto.LibraryDto
 import net.dom53.inkita.data.api.dto.NamedDto
+import net.dom53.inkita.data.api.dto.PersonDto
 import net.dom53.inkita.data.api.dto.RatingDto
 import net.dom53.inkita.data.api.dto.ReadingListDto
 import net.dom53.inkita.data.api.dto.RecentlyAddedItemDto
@@ -47,12 +49,28 @@ interface KavitaApi {
         @Query("PageSize") pageSize: Int = 50,
     ): Response<List<ReadingListDto>>
 
+    @GET("api/Person")
+    suspend fun getPerson(
+        @Query("name") name: String,
+    ): Response<PersonDto>
+
     @POST("api/Person/all")
     suspend fun getBrowsePeople(
         @Body filter: BrowsePersonFilterDto,
         @Query("PageNumber") pageNumber: Int,
         @Query("PageSize") pageSize: Int,
     ): Response<List<BrowsePersonDto>>
+
+    @GET("api/Person/series-known-for")
+    suspend fun getPersonSeriesKnownFor(
+        @Query("personId") personId: Int,
+    ): Response<List<SeriesDto>>
+
+    @GET("api/Person/chapters-by-role")
+    suspend fun getPersonChaptersByRole(
+        @Query("personId") personId: Int,
+        @Query("role") role: Int,
+    ): Response<List<ChapterDto>>
 
     @GET("api/Collection")
     suspend fun getOwnedCollections(
