@@ -153,11 +153,11 @@ internal fun ChapterListV2(
     ) {
         chapters.forEachIndexed { index, chapter ->
             val coverUrl = chapterCoverUrl(config, chapter.id)
+            val chapterNumber = chapter.number ?: "${index + 1}"
             val title =
                 chapter.titleName?.takeIf { it.isNotBlank() }
                     ?: chapter.title?.takeIf { it.isNotBlank() }
                     ?: chapter.range?.takeIf { it.isNotBlank() }
-                    ?: "Chapter ${index + 1}"
             val pagesRead = chapter.pagesRead ?: 0
             val pagesTotal = chapter.pages ?: 0
             Column(
@@ -173,7 +173,7 @@ internal fun ChapterListV2(
                 Box {
                     CoverImage(
                         coverUrl = coverUrl,
-                        context = androidx.compose.ui.platform.LocalContext.current,
+                        context = LocalContext.current,
                         modifier =
                             Modifier
                                 .fillMaxWidth()
@@ -247,15 +247,15 @@ internal fun ChapterListV2(
                     }
                 }
                 Text(
-                    text = title,
+                    text =
+                        if (title != null && title.isNotBlank() && title != chapterNumber) {
+                            "Chapter $chapterNumber: $title"
+                        } else {
+                            "Chapter $chapterNumber"
+                        },
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = "Ch. ${index + 1}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
