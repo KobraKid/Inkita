@@ -529,7 +529,12 @@ fun InkitaApp(
                         val person = it.toRoute<PersonScreen>()
                         PersonDetailScreen(
                             personDetailScreen = person,
+                            cacheManager = cacheManager,
                             appPreferences = appPreferences,
+                            onOpenSeries = { seriesId ->
+                                navController.navigate("series/$seriesId")
+                            },
+                            onBack = { navController.popBackStack() },
                         )
                     }
                     composable(MainScreen.Downloads.route) {
